@@ -22,6 +22,10 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: json, mbstring, openssl, pdo, pdo_mysql, mailparse, iconv, gd, zlib, curl, xml, simplexml, dom, calendar, gettext, zip, tidy, intl
 
+      - uses: actions/checkout@v3
+        with:
+          path: main
+
       - name: Build Swig
         run: |
           git clone https://github.com/swig/swig.git
@@ -39,9 +43,10 @@ jobs:
           cd wrappers_build # Move to that directory.
           
           git clone https://github.com/PDFTron/PDFNetWrappers # Git the code.
-          cd PDFNetWrappers/PDFNetC # Move to where we download PDFNet.
+          cd PDFNetWrappers/PDFNetC # Move to where we download PDFNet
           
-          wget https://www.pdftron.com/downloads/PDFNetC64.tar.gz # Download PDFNet.
+          cp ../../../main/PDFNetC64.tar.gz ./
+          
           tar xzvf PDFNetC64.tar.gz # Unpack PDFNet.
           mv PDFNetC64/Headers/ . # Move PDFNet Headers/ into place.
           mv PDFNetC64/Lib/ . # Move PDFNet Lib/ into place.
