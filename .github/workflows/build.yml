@@ -27,8 +27,6 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: json, mbstring, openssl, pdo, pdo_mysql, mailparse, iconv, gd, zlib, curl, xml, simplexml, dom, calendar, gettext, zip, tidy, intl
 
-      - name:
-
       - uses: actions/checkout@v3
         with:
           path: main
