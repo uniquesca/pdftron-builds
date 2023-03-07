@@ -75,7 +75,7 @@ jobs:
       - name: Build PDFTron
         run: |
           cd wrappers_build/PDFNetWrappers/
-          mkdir Build
+          mkdir -p Build
           cd Build
           cmake -D BUILD_PDFNetPHP=ON ..
           make
