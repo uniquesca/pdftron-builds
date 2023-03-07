@@ -58,6 +58,7 @@ jobs:
           sudo make install
           # check version reported
           swig -version
+          echo $(SWIG_VERSION)
           ls -al
           sudo printf "export SWIG_PATH=$(pwd)/swigtool/bin\nexport PATH=$SWIG_PATH:$PATH" >> /etc/profile
           source /etc/profile
