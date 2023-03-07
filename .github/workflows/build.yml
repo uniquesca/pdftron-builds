@@ -50,13 +50,7 @@ jobs:
         run: |
           wget https://github.com/swig/swig/archive/refs/tags/v2.0.12.tar.gz
           tar xzvf v2.0.12.tar.gz
-          sudo
-          apt-get install automake
-          apt-get install build-essential
-          apt-get install libtool
-          apt-get install libpcre3-dev
-          apt-get install libpcre3
-          apt-get install bison flex
+          sudo apt-get install automake build-essential libtool libpcre3-dev libpcre3 bison flex
           ./autogen.sh
           ./configure
           make
