@@ -58,6 +58,9 @@ jobs:
           sudo make install
           # check version reported
           swig -version
+          ls -al
+          sudo printf "export SWIG_PATH=$(pwd)/swigtool/bin\nexport PATH=$SWIG_PATH:$PATH" >> /etc/profile
+          source /etc/profile
 
       - name: Clone PDFTron
         run: |
