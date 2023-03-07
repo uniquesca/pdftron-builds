@@ -56,24 +56,33 @@ jobs:
           # check version reported
           swig -version
 
-      - name: Build PDFTron
+      - name: Clone PDFTron
         run: |
           mkdir wrappers_build # Make a directory to build the wrappers in.
           cd wrappers_build # Move to that directory.
           
           git clone https://github.com/PDFTron/PDFNetWrappers # Git the code.
           cd PDFNetWrappers/PDFNetC # Move to where we download PDFNet
-          
-          cp ../../../main/PDFNetC64.tar.gz ./
-          
-          tar xzvf PDFNetC64.tar.gz # Unpack PDFNet.
-          mv PDFNetC64/Headers/ . # Move PDFNet Headers/ into place.
-          mv PDFNetC64/Lib/ . # Move PDFNet Lib/ into place.
-          cd .. # Go back up.
-          #mkdir Build # Create a directory to create the Makefiles in.
-          cd Build # Move to that directory.
-          cmake -D BUILD_PDFNetPHP=ON .. # Create the Makefiles with CMake.
-          make # Build the PHP wrappers with SWIG.
-          sudo make install # Copy the PHP wrappers to where the samples can find them.
-          
-          ls -al
+
+      - name: Copy and unpack PDFNet
+        run: |
+          cp main/PDFNetC64.tar.gz wrappers_build/PDFNetWrappers/PDFNetC/
+          cd wrappers_build/PDFNetWrappers/PDFNetC/
+          tar xzvf PDFNetC64.tar.gz
+          mv PDFNetC64/Headers/ .
+          mv PDFNetC64/Lib/ .
+
+      - name: Build PDFTron
+        run: |
+          cd wrappers_build/PDFNetWrappers/
+          mkdir Build
+          cd Build
+          cmake -D BUILD_PDFNetPHP=ON ..
+          make
+          sudo make install
+
+      - name: List files
+        run: ls -al wrappers_build
+
+      - name: List files
+        run: ls -al wrappers_build/PDFNetWrappers
