@@ -32,7 +32,7 @@ jobs:
           path: main
 
       - name: Delete default Swig
-        run: sudo apt-get purge swig
+        run: sudo apt-get remove swig -y
 
       - name: Build Swig v4
         if: matrix.php == '8.1'
