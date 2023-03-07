@@ -27,11 +27,14 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: json, mbstring, openssl, pdo, pdo_mysql, mailparse, iconv, gd, zlib, curl, xml, simplexml, dom, calendar, gettext, zip, tidy, intl
 
+      - name:
+
       - uses: actions/checkout@v3
         with:
           path: main
 
-      - name: Build Swig
+      - name: Build Swig v4
+        if: matrix.php == '8.1'
         run: |
           git clone https://github.com/swig/swig.git
           cd swig
@@ -41,6 +44,25 @@ jobs:
           make
           sudo make install
           swig -version # check to make sure swig version 4.1.0 before continuing
+
+      - name: Build Swig v2
+        if: matrix.php == '5.6'
+        run: |
+          wget https://github.com/swig/swig/archive/refs/tags/v2.0.12.tar.gz
+          tar xzvf v2.0.12.tar.gz
+          sudo
+          apt-get install automake
+          apt-get install build-essential
+          apt-get install libtool
+          apt-get install libpcre3-dev
+          apt-get install libpcre3
+          apt-get install bison flex
+          ./autogen.sh
+          ./configure
+          make
+          sudo make install
+          # check version reported
+          swig -version
 
       - name: Build PDFTron
         run: |
@@ -56,7 +78,7 @@ jobs:
           mv PDFNetC64/Headers/ . # Move PDFNet Headers/ into place.
           mv PDFNetC64/Lib/ . # Move PDFNet Lib/ into place.
           cd .. # Go back up.
-          mkdir Build # Create a directory to create the Makefiles in.
+          #mkdir Build # Create a directory to create the Makefiles in.
           cd Build # Move to that directory.
           cmake -D BUILD_PDFNetPHP=ON .. # Create the Makefiles with CMake.
           make # Build the PHP wrappers with SWIG.
