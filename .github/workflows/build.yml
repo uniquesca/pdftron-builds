@@ -79,6 +79,7 @@ jobs:
         run: |
           swig -version
           cd wrappers_build/PDFNetWrappers/
+          cat PDFNetPHP/CMakeLists.txt
           mkdir -p Build
           cd Build
           cmake -D BUILD_PDFNetPHP=ON ..
