@@ -10,8 +10,13 @@ jobs:
   test:
     strategy:
       matrix:
-        os: [ ubuntu-16.04 ]
-        php: [ 5.6 ]
+        os: [ ubuntu-16.04, ubuntu-22.04 ]
+        php: [ 5.6, 8.1 ]
+        exclude:
+          - os: ubuntu-16.04
+            php: 8.1
+          - os: ubuntu-22.04
+            php: 5.6
 
     runs-on: ${{ matrix.os }}
 
