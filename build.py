@@ -206,8 +206,10 @@ def main():
         for data in execute(cmakeCommand):
            print(data, end="")
     except subprocess.CalledProcessError as e:
-        print(str(e.stdout.__dict__));
-        # print(e.stdout.decode())
+        if e.stdout is None:
+            print(str(e.stdout));
+        else:
+            print(e.stdout.decode())
         raise
 
     if wrapper.endswith('PDFTronGo'):
