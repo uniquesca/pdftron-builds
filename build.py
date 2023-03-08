@@ -209,7 +209,7 @@ def main():
         print(e.stdout.decode())
         raise
 
-    if wrapper === PDFTronGo:
+    if wrapper === "PDFTronGo":
         print("Moving pdftron wrap...")
         os.chdir(os.path.join("PDFTronGo", "pdftron"))
         if platform.system().startswith('Windows'):

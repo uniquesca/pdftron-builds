@@ -64,7 +64,7 @@ jobs:
         run: |
           rsync -avhW main/build.py wrappers_build/PDFNetWrappers/build.py
           cd wrappers_build/PDFNetWrappers/ 
-          python3 build.py --custom_swig=/usr/local/bin/swig --wrapper=PDFNetPHP
+          python3 build.py --custom_swig=/usr/local/bin/swig --wrapper=BUILD_PDFNetPHP
 
       - name: See compiled stuff
         run: |
