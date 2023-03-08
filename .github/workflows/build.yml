@@ -61,6 +61,20 @@ jobs:
           sudo printf "export SWIG_VERSION=$(swig -version)" >> /etc/profile
           source /etc/profile
 
+      - name: Find SWIG_VERSION environment source
+        run: |
+          cat /etc/environment
+          ls -al /etc/env.d/
+          cat /etc/profile
+          ls -al /etc/profile.d/
+          cat ~/.profile
+          cat ~/.pam_environment
+          cat ~/.bash_profile
+          cat ~/.bashrc
+          cat ~/.cshrc
+          cat ~/.zshrc
+          cat ~/.tcshrc
+
       - name: Clone PDFTron
         run: |
           mkdir wrappers_build # Make a directory to build the wrappers in.
