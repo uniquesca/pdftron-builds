@@ -64,7 +64,6 @@ jobs:
       - name: Find SWIG_VERSION environment source
         run: |
           cat /etc/environment
-          ls -al /etc/env.d/
           cat /etc/profile
           ls -al /etc/profile.d/
           cat ~/.profile
