@@ -61,4 +61,6 @@ jobs:
           git clone https://github.com/PDFTron/PDFNetWrappers # Git the code.
 
       - name: Run build
-        run: python3 build.py --custom_swig=/usr/local/bin/swig
+        run: |
+          cd wrappers_build/PDFNetWrappers/ 
+          python3 build.py --custom_swig=/usr/local/bin/swig
