@@ -66,6 +66,9 @@ jobs:
           cd wrappers_build/PDFNetWrappers/ 
           python3 build.py --custom_swig=/usr/local/bin/swig --wrapper=BUILD_PDFNetPHP
 
+      - if: always()
+        run: cat wrappers_build/PDFNetWrappers/build/CMakeFiles/CMakeOutput.log
+
       - name: See compiled stuff
         run: |
           ls -al wrappers_build/PDFNetWrappers/Build/
