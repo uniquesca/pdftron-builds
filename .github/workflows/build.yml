@@ -44,8 +44,7 @@ jobs:
           cmake ..
           make
           sudo make install
-          printf "export SWIG_VERSION=$(swig -version)" >> ~/.bash_profile
-          source ~/.bash_profile
+          export SWIG_VERSION=$(swig -version)
 
       - name: Build Swig v2
         if: matrix.php == '5.6'
@@ -59,8 +58,7 @@ jobs:
           sudo make install
           # check version reported
           swig -version
-          printf "export SWIG_VERSION=$(swig -version)" >> ~/.bash_profile
-          source ~/.bash_profile
+          export SWIG_VERSION=$(swig -version)
 
       - name: Find SWIG_VERSION environment source
         run: |
