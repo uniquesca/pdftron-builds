@@ -89,13 +89,13 @@ def replacego(filepath):
     with open(filepathname, "w+") as f:
        f.write(go)
 
-def fixSamples(rootDir):
+def fixSamples(rootDir, wrapper):
     substr1 = "RUBY"
     substr2 = "PHP"
     substr3 = "PYTHON"
     strbatfile = ""
 
-    rootDir = os.path.join(rootDir, "build/PDFTronGo/pdftron/Samples")
+    rootDir = os.path.join(rootDir, "build/%s/pdftron/Samples" % wrapper)
     if not os.path.isdir(rootDir):
         raise Exception("Samples dir not found.");
 
@@ -156,7 +156,7 @@ def main():
     os.chdir("PDFNetC")
 
     gccCommand = ""
-    cmakeCommand = "cmake -D %s=ON" % wrapper
+    cmakeCommand = "cmake -D BUILD_%s=ON" % wrapper
     if custom_swig:
         swigVersionCommand = "%s -version" % custom_swig
         result = subprocess.run([custom_swig, '-version'], stdout=subprocess.PIPE)
@@ -176,7 +176,7 @@ def main():
         extractArchive("PDFNetC64.zip")
         os.remove("PDFNetC64.zip")
         copyPaths('PDFNetC64', ['Headers', 'Lib'], '.')
-        cmakeCommand = 'cmake -G "MinGW Makefiles" -D %s=ON ..' % wrapper
+        cmakeCommand = 'cmake -G "MinGW Makefiles" -D BUILD_%s=ON ..' % wrapper
         gccCommand = "g++ -shared -I../Headers -L . -lPDFNetC pdftron_wrap.cxx -o pdftron.dll"
     elif platform.system().startswith('Linux'):
         print("Running Linux build...")
@@ -243,7 +243,7 @@ def main():
             raise
 
     print("Fixing samples...")
-    fixSamples(rootDir)
+    fixSamples(rootDir, wrapper)
 
     print("Build completed.")
     return 0
