@@ -34,9 +34,6 @@ jobs:
       - name: Delete default Swig
         run: sudo apt-get purge swig -y
 
-      - name: Show profile.d scripts
-        run: ls -al /etc/profile.d/
-
       - name: Build Swig v4
         if: matrix.php == '8.1'
         run: |
@@ -47,8 +44,8 @@ jobs:
           cmake ..
           make
           sudo make install
-          sudo printf "export SWIG_VERSION=$(swig -version)" > /etc/profile.d/swig.sh
-          source /etc/profile.d/swig.sh
+          printf "export SWIG_VERSION=$(swig -version)" >> ~/.bash_profile
+          source ~/.bash_profile
 
       - name: Build Swig v2
         if: matrix.php == '5.6'
@@ -62,8 +59,8 @@ jobs:
           sudo make install
           # check version reported
           swig -version
-          sudo printf "export SWIG_VERSION=$(swig -version)" > /etc/profile.d/swig.sh
-          source /etc/profile.d/swig.sh
+          printf "export SWIG_VERSION=$(swig -version)" >> ~/.bash_profile
+          source ~/.bash_profile
 
       - name: Find SWIG_VERSION environment source
         run: |
