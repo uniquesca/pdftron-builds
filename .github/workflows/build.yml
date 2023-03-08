@@ -63,11 +63,19 @@ jobs:
 
       - name: Find SWIG_VERSION environment source
         run: |
-          cat ~/.profile
+          cat /etc/profile
           cat ~/.bash_profile
           cat ~/.bashrc
-          cat ~/.zshrc
           cat ~/.tcshrc
+
+      - name: Print env variables
+        run: printenv
+
+      - name: Print less env variables
+        run: printenv | less
+
+      - name: Print more env variables
+        run: printenv | more
 
       - name: Clone PDFTron
         run: |
