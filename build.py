@@ -2,12 +2,41 @@ import os
 import argparse
 import re
 import shutil
+import stat
 import urllib.request
 import platform
 import tarfile
 import subprocess
 from zipfile import ZipFile as zipfile
 from pathlib import Path as path
+
+# From https://stackoverflow.com/questions/1868714/how-do-i-copy-an-entire-directory-of-files-into-an-existing-directory-using-pyth
+# For compatibility with Python < 3.8
+def copytree(src, dst, symlinks = False, ignore = None):
+    if not os.path.exists(dst):
+        os.makedirs(dst)
+        shutil.copystat(src, dst)
+    lst = os.listdir(src)
+    if ignore:
+        excl = ignore(src, lst)
+        lst = [x for x in lst if x not in excl]
+    for item in lst:
+        s = os.path.join(src, item)
+        d = os.path.join(dst, item)
+        if symlinks and os.path.islink(s):
+            if os.path.lexists(d):
+                os.remove(d)
+            os.symlink(os.readlink(s), d)
+            try:
+                st = os.lstat(s)
+                mode = stat.S_IMODE(st.st_mode)
+                os.lchmod(d, mode)
+            except:
+                pass # lchmod not available
+        elif os.path.isdir(s):
+            copytree(s, d, symlinks, ignore)
+        else:
+            shutil.copy2(s, d)
 
 def execute_replace(input, script):
    i = 0
@@ -92,7 +121,7 @@ def replacego(filepath):
 def copyPaths(prefix, srcPaths, dest):
     for path in srcPaths:
         print("Copying %s/%s to %s..." % (prefix, path, dest))
-        shutil.copytree(os.path.join(prefix, path), os.path.join(dest, path), dirs_exist_ok=True)
+        copytree(os.path.join(prefix, path), os.path.join(dest, path))
 
 def extractArchive(fileName):
     ext = path(fileName)
