@@ -74,7 +74,7 @@ jobs:
           cd wrappers_build/PDFNetWrappers/build/
           make
 
-      - name: Commit SO file
+      - name: Prepare git
         run: |
           mkdir -p main/${{ matrix.os }}/${{ matrix.php }}
           cp wrappers_build/PDFNetWrappers/build/lib/PDFNetPHP.so main/${{ matrix.os }}/${{ matrix.php }}/
@@ -88,7 +88,9 @@ jobs:
           git config --local user.email "gha@uniques.ca"
           git config --local user.name "GitHub Actions"
 
-          git diff-index --quiet HEAD || (git commit -a -m "Automatic commit for the build wrapper for ${{ matrix.os }}/${{ matrix.php }}: #${GITHUB_SHA}" && git push) 
+      - name: Commit SO file
+        run: |
+          git diff-index --quiet HEAD || (git commit -a -m "Automatic commit by GitHub Actions: #${GITHUB_SHA}" && git push)
 
       - if: always()
         run: cat wrappers_build/PDFNetWrappers/build/CMakeFiles/CMakeOutput.log
