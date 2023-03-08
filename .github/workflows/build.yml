@@ -31,9 +31,6 @@ jobs:
         with:
           path: main
 
-      - name: Delete default Swig
-        run: sudo apt-get purge swig -y
-
       - name: Build Swig v4
         if: matrix.php == '8.1'
         run: |
@@ -88,7 +85,6 @@ jobs:
 
       - name: Build PDFTron
         run: |
-          swig -version
           cd wrappers_build/PDFNetWrappers/
           cat PDFNetPHP/CMakeLists.txt
           mkdir -p Build
