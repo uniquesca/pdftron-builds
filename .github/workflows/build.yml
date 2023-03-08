@@ -81,6 +81,8 @@ jobs:
           
           cd main/
           
+          git branch
+          
           git checkout ${{ matrix.os }}-${{ matrix.php }}
           
           git add .
