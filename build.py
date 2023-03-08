@@ -230,14 +230,17 @@ def main():
         if platform.system().startswith('Windows'):
             os.remove("pdfnetc.lib")
 
-    print("Running GCC: " + gccCommand)
-    try:
-        for data in execute(gccCommand):
-           print(data, end="")
+        print("Running GCC: " + gccCommand)
+        try:
+            for data in execute(gccCommand):
+               print(data, end="")
 
-    except subprocess.CalledProcessError as e:
-        print(e.stdout.decode())
-        raise
+        except subprocess.CalledProcessError as e:
+            if e.stdout is None:
+                print(str(e.stdout));
+            else:
+                print(e.stdout.decode())
+            raise
 
     print("Fixing samples...")
     fixSamples(rootDir)
