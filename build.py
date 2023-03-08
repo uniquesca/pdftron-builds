@@ -159,8 +159,8 @@ def main():
     cmakeCommand = "cmake -D %s=ON" % wrapper
     if custom_swig:
         swigVersionCommand = "%s -version" % custom_swig
-        stream = os.popen(swigVersionCommand)
-        swigVersion = stream.read()
+        result = subprocess.run([custom_swig, '-version'], stdout=subprocess.PIPE)
+        swigVersion = result.stdout
         print("Using custom SWIG at %s, version %s" % (custom_swig, swigVersion))
         cmakeCommand += " -D CUSTOM_SWIG=%s -D SWIG_VERSION=%s" % (custom_swig, swigVersion)
 

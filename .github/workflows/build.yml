@@ -41,6 +41,8 @@ jobs:
           cmake ..
           make
           sudo make install
+          swig -version
+          /usr/local/bin/swig -version
 
       - name: Build Swig v2
         if: matrix.php == '5.6'
