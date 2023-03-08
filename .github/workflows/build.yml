@@ -64,3 +64,8 @@ jobs:
         run: |
           cd wrappers_build/PDFNetWrappers/ 
           python3 build.py --custom_swig=/usr/local/bin/swig
+
+      - name: See compiled stuff
+        run: |
+          ls -al wrappers_build/PDFNetWrappers/Build/
+          ls -al wrappers_build/PDFNetWrappers/build/
