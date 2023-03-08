@@ -63,11 +63,21 @@ jobs:
           cd wrappers_build # Move to that directory.
           git clone https://github.com/PDFTron/PDFNetWrappers # Git the code.
 
-      - name: Run build
+      - name: CMake
         run: |
           rsync -avhW main/build.py wrappers_build/PDFNetWrappers/build.py
           cd wrappers_build/PDFNetWrappers/ 
           python3 build.py --custom_swig=/usr/local/bin/swig --wrapper=PDFNetPHP
+
+      - name: Make
+        run: |
+          cd wrappers_build/PDFNetWrappers/build/
+          make
+
+      - name: Run samples
+        run: |
+          cd wrappers_build/PDFNetWrappers/Samples/
+          ./runall_php.sh
 
       - if: always()
         run: cat wrappers_build/PDFNetWrappers/build/CMakeFiles/CMakeOutput.log
@@ -76,6 +86,5 @@ jobs:
         if: always()
         run: |
           ls -al wrappers_build/PDFNetWrappers/build/
-          ls -al wrappers_build/PDFNetWrappers/build/lib/
           ls -al wrappers_build/PDFNetWrappers/build/PDFNetPHP/
           

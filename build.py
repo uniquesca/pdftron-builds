@@ -89,34 +89,6 @@ def replacego(filepath):
     with open(filepathname, "w+") as f:
        f.write(go)
 
-def fixSamples(rootDir, wrapper):
-    substr1 = "RUBY"
-    substr2 = "PHP"
-    substr3 = "PYTHON"
-    strbatfile = ""
-
-    rootDir = os.path.join(rootDir, "build/%s/pdftron/Samples" % wrapper)
-    if not os.path.isdir(rootDir):
-        raise Exception("Samples dir %s not found." % rootDir);
-
-    for dirName, subdirList, fileList in os.walk(rootDir):
-        if substr1 in dirName  or substr2 in dirName or substr3 in dirName :
-            shutil.rmtree(dirName)
-        else:
-            for fname in fileList:
-                if re.match(fname, "RunTest.bat") :
-                    print('Found directory: %s' % dirName)
-                    print('\t%s' % fname)
-                    strbatfile = dirName + "/" + fname
-                    f = open(strbatfile,"r")
-                    filedata = f.read()
-                    f.close()
-                    newdata = filedata.replace("setlocal", "if not exist ..\..\\bin\pdftron.dll (\n\tcopy ..\..\..\PDFNetC\Lib\pdftron.dll ..\..\\bin\pdftron.dll >nul \n)\n\nsetlocal\n")
-
-                    f = open(strbatfile,"w")
-                    f.write(newdata)
-                    f.close()
-
 def copyPaths(prefix, srcPaths, dest):
     for path in srcPaths:
         print("Copying %s/%s to %s..." % (prefix, path, dest))
@@ -241,9 +213,6 @@ def main():
             else:
                 print(e.stdout.decode())
             raise
-
-    print("Fixing samples...")
-    fixSamples(rootDir, wrapper)
 
     print("Build completed.")
     return 0
