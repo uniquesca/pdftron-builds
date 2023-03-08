@@ -73,6 +73,6 @@ jobs:
         run: cat wrappers_build/PDFNetWrappers/build/CMakeFiles/CMakeOutput.log
 
       - name: See compiled stuff
+        if: always()
         run: |
-          ls -al wrappers_build/PDFNetWrappers/Build/
           ls -al wrappers_build/PDFNetWrappers/build/
