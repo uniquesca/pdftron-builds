@@ -74,10 +74,17 @@ jobs:
           cd wrappers_build/PDFNetWrappers/build/
           make
 
-      - name: Run samples
+      - name: Commit SO file
         run: |
-          cd wrappers_build/PDFNetWrappers/Samples/
-          ./runall_php.sh
+          mkdir -p main/${{ matrix.os }}/${{ matrix.php }}
+          cp wrappers_build/PDFNetWrappers/build/lib/PDFNetPHP.so main/${{ matrix.os }}/${{ matrix.php }}/
+          
+          git add .
+
+          git config --local user.email "gha@uniques.ca"
+          git config --local user.name "GitHub Actions"
+
+          git diff-index --quiet HEAD || (git commit -a -m "Automatic commit for the build wrapper for ${{ matrix.os }}/${{ matrix.php }}: #${GITHUB_SHA}" && git push)
 
       - if: always()
         run: cat wrappers_build/PDFNetWrappers/build/CMakeFiles/CMakeOutput.log
