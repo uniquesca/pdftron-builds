@@ -53,6 +53,7 @@ jobs:
           make
           sudo make install
           swig -version
+          /usr/local/bin/swig -version
 
       - name: Clone PDFTron
         run: |
@@ -64,7 +65,7 @@ jobs:
         run: |
           rsync -avhW main/build.py wrappers_build/PDFNetWrappers/build.py
           cd wrappers_build/PDFNetWrappers/ 
-          python3 build.py --custom_swig=/usr/local/bin/swig --wrapper=BUILD_PDFNetPHP
+          python3 build.py --custom_swig=swig --wrapper=BUILD_PDFNetPHP
 
       - if: always()
         run: cat wrappers_build/PDFNetWrappers/build/CMakeFiles/CMakeOutput.log
