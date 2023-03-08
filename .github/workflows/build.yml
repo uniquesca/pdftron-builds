@@ -79,6 +79,10 @@ jobs:
           mkdir -p main/${{ matrix.os }}/${{ matrix.php }}
           cp wrappers_build/PDFNetWrappers/build/lib/PDFNetPHP.so main/${{ matrix.os }}/${{ matrix.php }}/
           
+          cd main/
+          
+          git checkout -b ${{ matrix.os }}-${{ matrix.php }}
+          
           git add .
 
           git config --local user.email "gha@uniques.ca"
