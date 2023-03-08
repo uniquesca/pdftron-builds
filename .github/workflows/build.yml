@@ -76,3 +76,6 @@ jobs:
         if: always()
         run: |
           ls -al wrappers_build/PDFNetWrappers/build/
+          ls -al wrappers_build/PDFNetWrappers/build/lib/
+          ls -al wrappers_build/PDFNetWrappers/build/PDFNetPHP/
+          
