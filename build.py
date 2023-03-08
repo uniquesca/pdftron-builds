@@ -207,7 +207,7 @@ def main():
            print(data, end="")
     except subprocess.CalledProcessError as e:
         print(str(e.stdout.__dict__));
-        // print(e.stdout.decode())
+        # print(e.stdout.decode())
         raise
 
     if wrapper.endswith('PDFTronGo'):
