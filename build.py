@@ -97,7 +97,7 @@ def fixSamples(rootDir, wrapper):
 
     rootDir = os.path.join(rootDir, "build/%s/pdftron/Samples" % wrapper)
     if not os.path.isdir(rootDir):
-        raise Exception("Samples dir not found.");
+        raise Exception("Samples dir %s not found." % rootDir);
 
     for dirName, subdirList, fileList in os.walk(rootDir):
         if substr1 in dirName  or substr2 in dirName or substr3 in dirName :
