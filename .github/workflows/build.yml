@@ -46,7 +46,7 @@ jobs:
       - name: Build Swig v2
         if: matrix.php == '5.6'
         run: |
-          sudo apt-get install automake build-essential libtool libpcre3-dev libpcre3 bison flex
+          sudo apt-get install automake build-essential libtool libpcre3-dev libpcre3 bison flex yodl
           mkdir swig
           wget -q https://github.com/swig/swig/archive/refs/tags/v2.0.12.tar.gz
           tar xzf v2.0.12.tar.gz
