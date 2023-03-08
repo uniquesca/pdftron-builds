@@ -88,14 +88,15 @@ jobs:
           git config --local user.email "gha@uniques.ca"
           git config --local user.name "GitHub Actions"
 
-          git diff-index --quiet HEAD || (git commit -a -m "Automatic commit for the build wrapper for ${{ matrix.os }}/${{ matrix.php }}: #${GITHUB_SHA}" && git push --set-upstream origin ${{ matrix.os }}-${{ matrix.php }}) 
+          git diff-index --quiet HEAD || (git commit -a -m "Automatic commit for the build wrapper for ${{ matrix.os }}/${{ matrix.php }}: #${GITHUB_SHA}" && git push) 
 
       - if: always()
         run: cat wrappers_build/PDFNetWrappers/build/CMakeFiles/CMakeOutput.log
 
-      - name: See compiled stuff
+      - name: See compiled files
         if: always()
         run: |
           ls -al wrappers_build/PDFNetWrappers/build/
+          ls -al wrappers_build/PDFNetWrappers/build/lib/
           ls -al wrappers_build/PDFNetWrappers/build/PDFNetPHP/
           
