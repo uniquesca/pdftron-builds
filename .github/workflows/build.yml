@@ -63,22 +63,9 @@ jobs:
 
       - name: Find SWIG_VERSION environment source
         run: |
-          cat /etc/environment
-          cat /etc/profile
-          cat /etc/profile.d/01-locale-fix.sh
-          cat /etc/profile.d/Z97-byobu.sh
-          cat /etc/profile.d/Z99-cloud-locale-test.sh
-          cat /etc/profile.d/Z99-cloudinit-warnings.sh
-          cat /etc/profile.d/apps-bin-path.sh
-          cat /etc/profile.d/bash_completion.sh
-          cat /etc/profile.d/dotnet-cli-tools-bin-path.sh
-          cat /etc/profile.d/gawk.csh
-          cat /etc/profile.d/gawk.sh
-          cat /etc/profile.d/linux-base-sgx.sh
           cat ~/.profile
           cat ~/.bash_profile
           cat ~/.bashrc
-          cat ~/.cshrc
           cat ~/.zshrc
           cat ~/.tcshrc
 
