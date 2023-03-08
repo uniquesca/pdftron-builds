@@ -44,6 +44,7 @@ jobs:
           cmake ..
           make
           sudo make install
+          sudo printf "export SWIG_VERSION=$(swig -version)" >> /etc/profile
           swig -version # check to make sure swig version 4.1.0 before continuing
 
       - name: Build Swig v2
@@ -67,12 +68,6 @@ jobs:
 
       - name: Print env variables
         run: printenv
-
-      - name: Print less env variables
-        run: printenv | less
-
-      - name: Print more env variables
-        run: printenv | more
 
       - name: Clone PDFTron
         run: |
