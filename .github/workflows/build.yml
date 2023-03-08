@@ -30,6 +30,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           path: main
+          ref: ${{ matrix.os }}-${{ matrix.php }}
 
       - name: Build Swig v4
         if: matrix.php == '8.1'
@@ -74,24 +75,20 @@ jobs:
           cd wrappers_build/PDFNetWrappers/build/
           make
 
-      - name: Prepare git
+      - name: Prepare git and commit
         run: |
-          mkdir -p main/${{ matrix.os }}/${{ matrix.php }}
-          cp wrappers_build/PDFNetWrappers/build/lib/PDFNetPHP.so main/${{ matrix.os }}/${{ matrix.php }}/
+          mkdir -p main/${{ matrix.os }}/php-${{ matrix.php }}
+          cp wrappers_build/PDFNetWrappers/build/lib/PDFNetPHP.so main/${{ matrix.os }}/php-${{ matrix.php }}/
           
           cd main/
           
           git branch
-          
-          git checkout ${{ matrix.os }}-${{ matrix.php }}
           
           git add .
 
           git config --local user.email "gha@uniques.ca"
           git config --local user.name "GitHub Actions"
 
-      - name: Commit SO file
-        run: |
           git diff-index --quiet HEAD || (git commit -a -m "Automatic commit by GitHub Actions: #${GITHUB_SHA}" && git push)
 
       - if: always()
