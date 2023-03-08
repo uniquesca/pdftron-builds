@@ -60,7 +60,8 @@ jobs:
           # check version reported
           swig -version
           export CUSTOM_SWIG=/usr/local/bin/swig
-          # export SWIG_VERSION=$(swig -version)
+          export SWIG_LIB=/usr/local/bin/swig
+          export SWIG_VERSION=$(swig -version)
 
       - name: Find SWIG_VERSION environment source
         run: |
@@ -92,7 +93,7 @@ jobs:
           cat PDFNetPHP/CMakeLists.txt
           mkdir -p Build
           cd Build
-          cmake -D BUILD_PDFNetPHP=ON ..
+          cmake -D BUILD_PDFNetPHP=ON -D CUSTOM_SWIG=/usr/local/bin/swig ..
           make
           sudo make install
 
