@@ -160,7 +160,7 @@ def main():
     if custom_swig:
         swigVersionCommand = "%s -version" % custom_swig
         result = subprocess.run([custom_swig, '-version'], stdout=subprocess.PIPE)
-        swigVersion = re.search(r"\d+\.\d+\.\d+", result.stdout).group()
+        swigVersion = re.search(r"\d+\.\d+\.\d+", result.stdout.decode()).group()
         print("Using custom SWIG at %s, version %s" % (custom_swig, swigVersion))
         cmakeCommand += " -D CUSTOM_SWIG=%s -D SWIG_VERSION=%s" % (custom_swig, swigVersion)
 
