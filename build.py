@@ -158,7 +158,9 @@ def main():
     gccCommand = ""
     cmakeCommand = "cmake -D %s=ON" % wrapper
     if custom_swig:
-       cmakeCommand += " -D CUSTOM_SWIG=%s" % custom_swig
+        swigVersionCommand = "%s --version" % custom_swig
+        swigVersion = os.system(swigVersionCommand)
+        cmakeCommand += " -D CUSTOM_SWIG=%s -D SWIG_VERSION" % (custom_swig, swigVersion)
 
     cmakeCommand += ' ..'
 
