@@ -44,8 +44,8 @@ jobs:
           cmake ..
           make
           sudo make install
-          sudo printf "export SWIG_VERSION=$(swig -version)" >> /etc/profile
-          swig -version # check to make sure swig version 4.1.0 before continuing
+          sudo printf "export SWIG_VERSION=$(swig -version)" > /etc/profile.d/swig.sh
+          source /etc/profile.d/swig.sh
 
       - name: Build Swig v2
         if: matrix.php == '5.6'
@@ -59,8 +59,8 @@ jobs:
           sudo make install
           # check version reported
           swig -version
-          sudo printf "export SWIG_VERSION=$(swig -version)" >> /etc/profile
-          source /etc/profile
+          sudo printf "export SWIG_VERSION=$(swig -version)" > /etc/profile.d/swig.sh
+          source /etc/profile.d/swig.sh
 
       - name: Find SWIG_VERSION environment source
         run: |
