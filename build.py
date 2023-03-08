@@ -160,7 +160,7 @@ def main():
     if custom_swig:
         swigVersionCommand = "%s -version" % custom_swig
         swigVersion = os.system(swigVersionCommand)
-        cmakeCommand += " -D CUSTOM_SWIG=%s -D SWIG_VERSION" % (custom_swig, swigVersion)
+        cmakeCommand += " -D CUSTOM_SWIG=%s -D SWIG_VERSION=%s" % (custom_swig, swigVersion)
 
     cmakeCommand += ' ..'
 
