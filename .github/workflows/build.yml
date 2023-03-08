@@ -41,8 +41,6 @@ jobs:
           cmake ..
           make
           sudo make install
-          export CUSTOM_SWIG=/usr/local/bin/swig
-          # export SWIG_VERSION=$(swig -version)
 
       - name: Build Swig v2
         if: matrix.php == '5.6'
@@ -54,47 +52,13 @@ jobs:
           ./configure
           make
           sudo make install
-          # check version reported
           swig -version
-          export CUSTOM_SWIG=/usr/local/bin/swig
-          export SWIG_LIB=/usr/local/bin/swig
-          export SWIG_VERSION=$(swig -version)
-
-      - name: Find SWIG_VERSION environment source
-        run: |
-          cat /etc/profile
-
-      - name: Print env variables
-        run: printenv
 
       - name: Clone PDFTron
         run: |
           mkdir wrappers_build # Make a directory to build the wrappers in.
           cd wrappers_build # Move to that directory.
-          
           git clone https://github.com/PDFTron/PDFNetWrappers # Git the code.
-          cd PDFNetWrappers/PDFNetC # Move to where we download PDFNet
 
-      - name: Copy and unpack PDFNet
-        run: |
-          cp main/PDFNetC64.tar.gz wrappers_build/PDFNetWrappers/PDFNetC/
-          cd wrappers_build/PDFNetWrappers/PDFNetC/
-          tar xzvf PDFNetC64.tar.gz
-          mv PDFNetC64/Headers/ .
-          mv PDFNetC64/Lib/ .
-
-      - name: Build PDFTron
-        run: |
-          cd wrappers_build/PDFNetWrappers/
-          cat PDFNetPHP/CMakeLists.txt
-          mkdir -p Build
-          cd Build
-          cmake -D BUILD_PDFNetPHP=ON -D CUSTOM_SWIG=/usr/local/bin/swig ..
-          make
-          sudo make install
-
-      - name: List files
-        run: ls -al wrappers_build
-
-      - name: List files
-        run: ls -al wrappers_build/PDFNetWrappers
+      - name: Run build
+        run: python3 build.py --custom_swig=/usr/local/bin/swig
