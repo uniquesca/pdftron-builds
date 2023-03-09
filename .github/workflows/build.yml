@@ -83,7 +83,7 @@ jobs:
         run: |
           mkdir -p main/${{ matrix.os }}/php-${{ matrix.php }}
           cp wrappers_build/PDFNetWrappers/build/lib/PDFNetPHP.so main/${{ matrix.os }}/php-${{ matrix.php }}/
-          cp wrappers_build/PDFNetWrappers/PDFNetC64/Lib/libPDFNetC.so main/${{ matrix.os }}/php-${{ matrix.php }}/
+          cp wrappers_build/PDFNetWrappers/PDFNetC/Lib/libPDFNetC.so main/${{ matrix.os }}/php-${{ matrix.php }}/
           
           cd main/
                    
@@ -104,7 +104,7 @@ jobs:
           ls -al wrappers_build/PDFNetWrappers/build/
           ls -al wrappers_build/PDFNetWrappers/build/lib/
           ls -al wrappers_build/PDFNetWrappers/build/PDFNetPHP/
-          ls -al wrappers_build/PDFNetWrappers/PDFNetC64/
-          ls -al wrappers_build/PDFNetWrappers/PDFNetC64/Lib/
+          ls -al wrappers_build/PDFNetWrappers/PDFNetC/
+          ls -al wrappers_build/PDFNetWrappers/PDFNetC/Lib/
           
           
