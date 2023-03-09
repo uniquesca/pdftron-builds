@@ -86,6 +86,8 @@ jobs:
           cp wrappers_build/PDFNetWrappers/PDFNetC/Lib/libPDFNetC.so main/${{ matrix.os }}/php-${{ matrix.php }}/
           
           cd main/
+          
+          git pull
                    
           git add .
 
