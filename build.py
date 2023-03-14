@@ -70,54 +70,6 @@ def execute_replace(input, script):
          break
    return input
 
-def replacego(filepath):
-    filepathname = os.path.join(filepath, "pdftron_wrap.cxx")
-    with open(filepathname, "r") as f:
-       cxx = f.read()
-
-    filepathname = os.path.join(filepath, "pdftron_wrap.h")
-    with open(filepathname, "r") as f:
-       h = f.read()
-
-    filepathname = os.path.join(filepath, "pdftron.go")
-    with open(filepathname, "r") as f:
-       go = f.read()
-
-    filepathname = os.path.join(filepath, "pdftron_wrap.cxx.replace")
-    with open(filepathname, "r") as f:
-       cxx_replace = f.readlines()
-
-    filepathname = os.path.join(filepath, "pdftron_wrap.h.replace")
-    with open(filepathname, "r") as f:
-       h_replace = f.readlines()
-
-    filepathname = os.path.join(filepath, "pdftron.go.replace")
-    with open(filepathname, "r") as f:
-       go_replace = f.readlines()
-
-    uid = re.search(r'(extern\s+\w+\s+_wrap_\w+_pdftron_)(\w+)(\()', go).group(2)
-
-    go = execute_replace(go, go_replace)
-    cxx = execute_replace(cxx, cxx_replace)
-    h = execute_replace(h, h_replace)
-
-    old_uid = '02581caacfa652f4'
-    go = go.replace(old_uid, uid)
-    cxx = cxx.replace(old_uid, uid)
-    h = h.replace(old_uid, uid)
-
-    filepathname = os.path.join(filepath, "pdftron_wrap.cxx")
-    with open(filepathname, "w+") as f:
-       f.write(cxx)
-
-    filepathname = os.path.join(filepath, "pdftron_wrap.h")
-    with open(filepathname, "w+") as f:
-       f.write(h)
-
-    filepathname = os.path.join(filepath, "pdftron.go")
-    with open(filepathname, "w+") as f:
-       f.write(go)
-
 def copyPaths(prefix, srcPaths, dest):
     for path in srcPaths:
         print("Copying %s/%s to %s..." % (prefix, path, dest))
@@ -167,15 +119,6 @@ def main():
 
     cmakeCommand += ' ..'
 
-    if wrapper.endswith('PDFTronGo'):
-        entryPoint = "pdftron_wrap.cxx"
-        entryHeader = "pdftron_wrap.h"
-        entryPath = os.path.join(wrapper, "pdftron")
-    elif wrapper.endswith('PDFNetPHP'):
-        entryPoint = "PDFNetPHP.cpp"
-        entryHeader = "PDFNetPHP.hpp"
-        entryPath = wrapper
-
     if platform.system().startswith('Windows'):
         print("Running Windows build...")
         if not core_download_link:
@@ -187,7 +130,6 @@ def main():
         os.remove("PDFNetC64.zip")
         copyPaths('PDFNetC64', ['Headers', 'Lib'], '.')
         cmakeCommand = 'cmake -G "MinGW Makefiles" -D BUILD_%s=ON ..' % wrapper
-        gccCommand = "g++ -Wall -shared -I../Headers -L . -lPDFNetC %s -o pdftron.dll" % entryPoint
     elif platform.system().startswith('Linux'):
         print("Running Linux build...")
         if not core_download_link:
@@ -199,7 +141,6 @@ def main():
         extractArchive("PDFNetC64.tar.gz")
         os.remove("PDFNetC64.tar.gz")
         copyPaths('PDFNetC64', ['Headers', 'Lib'], '.')
-        gccCommand = "g++ -Wall -fuse-ld=gold -fpic -I ../Headers -L . -lPDFNetC -Wl,-rpath,. -shared -static-libstdc++ %s -o libpdftron.so" % entryPoint
     else:
         print("Running Mac build...")
         if not core_download_link:
@@ -211,7 +152,6 @@ def main():
         extractArchive("PDFNetCMac.zip")
         os.remove("PDFNetCMac.zip")
         copyPaths('PDFNetCMac', ['Headers', 'Lib', 'Resources'], '.')
-        gccCommand = "gcc -Wall -fPIC -lstdc++ -I../Headers -L. -lPDFNetC -dynamiclib -undefined suppress -flat_namespace %s -o libpdftron.dylib" % entryPoint
 
     os.chdir("../build")
 
@@ -219,37 +159,6 @@ def main():
     try:
         for data in execute(cmakeCommand):
            print(data, end="")
-    except subprocess.CalledProcessError as e:
-        if e.stdout is None:
-            print(str(e.stdout));
-        else:
-            print(e.stdout.decode())
-        raise
-
-    print("Moving pdftron wrap...")
-
-    if wrapper.endswith('PDFTronGo'):
-        if platform.system().startswith('Windows'):
-            shutil.copy(os.path.join(rootDir, "PDFTronGo", "CI", "Windows", "pdftron.go.replace"), entryPath)
-            shutil.copy(os.path.join(rootDir, "PDFTronGo", "CI", "Windows", "pdftron_wrap.cxx.replace"), entryPath)
-            shutil.copy(os.path.join(rootDir, "PDFTronGo", "CI", "Windows", "pdftron_wrap.h.replace"), entryPath)
-            replacego(entryPath)
-    elif wrapper.endswith('PDFNetPHP'):
-        copyPaths(rootDir, ['PDFNetC'], entryPath)
-
-    os.chdir(entryPath)
-    shutil.move(entryPoint, os.path.join("PDFNetC", "Lib"))
-    shutil.move(entryHeader, os.path.join("PDFNetC", "Lib"))
-
-    os.chdir(os.path.join("PDFNetC", "Lib"))
-    if platform.system().startswith('Windows'):
-        os.remove("pdfnetc.lib")
-
-    print("Running GCC: " + gccCommand)
-    try:
-        for data in execute(gccCommand):
-           print(data, end="")
-
     except subprocess.CalledProcessError as e:
         if e.stdout is None:
             print(str(e.stdout));
