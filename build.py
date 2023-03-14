@@ -167,6 +167,15 @@ def main():
 
     cmakeCommand += ' ..'
 
+    if wrapper.endswith('PDFTronGo'):
+        entryPoint = "pdftron_wrap.cxx"
+        entryHeader = "pdftron_wrap.h"
+        entryPath = os.path.join(wrapper, "pdftron")
+    elseif wrapper.endswith('PDFTronPHP'):
+        entryPoint = "PDFNetPHP.cpp"
+        entryHeader = "PDFNetPHP.hpp"
+        entryPath = wrapper
+
     if platform.system().startswith('Windows'):
         print("Running Windows build...")
         if not core_download_link:
@@ -178,7 +187,7 @@ def main():
         os.remove("PDFNetC64.zip")
         copyPaths('PDFNetC64', ['Headers', 'Lib'], '.')
         cmakeCommand = 'cmake -G "MinGW Makefiles" -D BUILD_%s=ON ..' % wrapper
-        gccCommand = "g++ -shared -I../Headers -L . -lPDFNetC pdftron_wrap.cxx -o pdftron.dll"
+        gccCommand = "g++ -shared -I../Headers -L . -lPDFNetC %s -o pdftron.dll" % entryPoint
     elif platform.system().startswith('Linux'):
         print("Running Linux build...")
         if not core_download_link:
@@ -190,7 +199,7 @@ def main():
         extractArchive("PDFNetC64.tar.gz")
         os.remove("PDFNetC64.tar.gz")
         copyPaths('PDFNetC64', ['Headers', 'Lib'], '.')
-        gccCommand = "g++ -fuse-ld=gold -fpic -I ../Headers -L . -lPDFNetC -Wl,-rpath,. -shared -static-libstdc++ pdftron_wrap.cxx -o libpdftron.so"
+        gccCommand = "g++ -fuse-ld=gold -fpic -I ../Headers -L . -lPDFNetC -Wl,-rpath,. -shared -static-libstdc++ %s -o libpdftron.so" % entryPoint
     else:
         print("Running Mac build...")
         if not core_download_link:
@@ -202,7 +211,7 @@ def main():
         extractArchive("PDFNetCMac.zip")
         os.remove("PDFNetCMac.zip")
         copyPaths('PDFNetCMac', ['Headers', 'Lib', 'Resources'], '.')
-        gccCommand = "gcc -fPIC -lstdc++ -I../Headers -L. -lPDFNetC -dynamiclib -undefined suppress -flat_namespace pdftron_wrap.cxx -o libpdftron.dylib"
+        gccCommand = "gcc -fPIC -lstdc++ -I../Headers -L. -lPDFNetC -dynamiclib -undefined suppress -flat_namespace %s -o libpdftron.dylib" % entryPoint
 
     os.chdir("../build")
 
@@ -217,31 +226,34 @@ def main():
             print(e.stdout.decode())
         raise
 
+    print("Moving pdftron wrap...")
+    os.chdir(entryPath)
+
     if wrapper.endswith('PDFTronGo'):
-        print("Moving pdftron wrap...")
-        os.chdir(os.path.join("PDFTronGo", "pdftron"))
         if platform.system().startswith('Windows'):
             shutil.copy(os.path.join(rootDir, "PDFTronGo", "CI", "Windows", "pdftron.go.replace"), '.')
             shutil.copy(os.path.join(rootDir, "PDFTronGo", "CI", "Windows", "pdftron_wrap.cxx.replace"), '.')
             shutil.copy(os.path.join(rootDir, "PDFTronGo", "CI", "Windows", "pdftron_wrap.h.replace"), '.')
             replacego('.')
-        shutil.move("pdftron_wrap.cxx", os.path.join("PDFNetC", "Lib"))
-        shutil.move("pdftron_wrap.h", os.path.join("PDFNetC", "Lib"))
-        os.chdir(os.path.join("PDFNetC", "Lib"))
-        if platform.system().startswith('Windows'):
-            os.remove("pdfnetc.lib")
 
-        print("Running GCC: " + gccCommand)
-        try:
-            for data in execute(gccCommand):
-               print(data, end="")
+    shutil.move(entryPoint, os.path.join("PDFNetC", "Lib"))
+    shutil.move(entryHeader, os.path.join("PDFNetC", "Lib"))
 
-        except subprocess.CalledProcessError as e:
-            if e.stdout is None:
-                print(str(e.stdout));
-            else:
-                print(e.stdout.decode())
-            raise
+    os.chdir(os.path.join("PDFNetC", "Lib"))
+    if platform.system().startswith('Windows'):
+        os.remove("pdfnetc.lib")
+
+    print("Running GCC: " + gccCommand)
+    try:
+        for data in execute(gccCommand):
+           print(data, end="")
+
+    except subprocess.CalledProcessError as e:
+        if e.stdout is None:
+            print(str(e.stdout));
+        else:
+            print(e.stdout.decode())
+        raise
 
     print("Build completed.")
     return 0

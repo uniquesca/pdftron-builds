@@ -82,8 +82,7 @@ jobs:
       - name: Prepare git and commit
         run: |
           mkdir -p main/${{ matrix.os }}/php-${{ matrix.php }}
-          cp wrappers_build/PDFNetWrappers/build/lib/PDFNetPHP.so main/${{ matrix.os }}/php-${{ matrix.php }}/
-          cp wrappers_build/PDFNetWrappers/build/lib/PDFNetPHP_core.php main/${{ matrix.os }}/php-${{ matrix.php }}/
+          cp wrappers_build/PDFNetWrappers/build/lib/* main/${{ matrix.os }}/php-${{ matrix.php }}/
           cp wrappers_build/PDFNetWrappers/PDFNetC/Lib/libPDFNetC.so main/${{ matrix.os }}/php-${{ matrix.php }}/
           
           cd main/
@@ -109,5 +108,3 @@ jobs:
           ls -al wrappers_build/PDFNetWrappers/build/PDFNetPHP/
           ls -al wrappers_build/PDFNetWrappers/PDFNetC/
           ls -al wrappers_build/PDFNetWrappers/PDFNetC/Lib/
-          
-          
