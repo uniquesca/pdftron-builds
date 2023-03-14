@@ -24,13 +24,10 @@ jobs:
 
     steps:
       - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: json, mbstring, openssl, pdo, pdo_mysql, mailparse, iconv, gd, zlib, curl, xml, simplexml, dom, calendar, gettext, zip, tidy, intl
-
-      - name: Install php-dev
-        run: apt-get install php-dev -y
+        run: |
+          sudo add-apt-repository -y ppa:ondrej/php
+          sudo apt-get update
+          sudo apt-get install php${{ matrix.php }} php${{ matrix.php }}-dev -y
 
       - uses: actions/checkout@v3
         with:
