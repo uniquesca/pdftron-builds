@@ -171,7 +171,7 @@ def main():
         entryPoint = "pdftron_wrap.cxx"
         entryHeader = "pdftron_wrap.h"
         entryPath = os.path.join(wrapper, "pdftron")
-    elseif wrapper.endswith('PDFTronPHP'):
+    elif wrapper.endswith('PDFTronPHP'):
         entryPoint = "PDFNetPHP.cpp"
         entryHeader = "PDFNetPHP.hpp"
         entryPath = wrapper
