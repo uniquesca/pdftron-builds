@@ -227,15 +227,17 @@ def main():
         raise
 
     print("Moving pdftron wrap...")
-    os.chdir(entryPath)
 
     if wrapper.endswith('PDFTronGo'):
         if platform.system().startswith('Windows'):
-            shutil.copy(os.path.join(rootDir, "PDFTronGo", "CI", "Windows", "pdftron.go.replace"), '.')
-            shutil.copy(os.path.join(rootDir, "PDFTronGo", "CI", "Windows", "pdftron_wrap.cxx.replace"), '.')
-            shutil.copy(os.path.join(rootDir, "PDFTronGo", "CI", "Windows", "pdftron_wrap.h.replace"), '.')
-            replacego('.')
+            shutil.copy(os.path.join(rootDir, "PDFTronGo", "CI", "Windows", "pdftron.go.replace"), entryPath)
+            shutil.copy(os.path.join(rootDir, "PDFTronGo", "CI", "Windows", "pdftron_wrap.cxx.replace"), entryPath)
+            shutil.copy(os.path.join(rootDir, "PDFTronGo", "CI", "Windows", "pdftron_wrap.h.replace"), entryPath)
+            replacego(entryPath)
+    elif wrapper.endswith('PDFNetPHP'):
+        copyPaths(rootDir, ['PDFNetC'], entryPath)
 
+    os.chdir(entryPath)
     shutil.move(entryPoint, os.path.join("PDFNetC", "Lib"))
     shutil.move(entryHeader, os.path.join("PDFNetC", "Lib"))
 
