@@ -187,7 +187,7 @@ def main():
         os.remove("PDFNetC64.zip")
         copyPaths('PDFNetC64', ['Headers', 'Lib'], '.')
         cmakeCommand = 'cmake -G "MinGW Makefiles" -D BUILD_%s=ON ..' % wrapper
-        gccCommand = "g++ -shared -I../Headers -L . -lPDFNetC %s -o pdftron.dll" % entryPoint
+        gccCommand = "g++ -Wall -shared -I../Headers -L . -lPDFNetC %s -o pdftron.dll" % entryPoint
     elif platform.system().startswith('Linux'):
         print("Running Linux build...")
         if not core_download_link:
@@ -199,7 +199,7 @@ def main():
         extractArchive("PDFNetC64.tar.gz")
         os.remove("PDFNetC64.tar.gz")
         copyPaths('PDFNetC64', ['Headers', 'Lib'], '.')
-        gccCommand = "g++ -fuse-ld=gold -fpic -I ../Headers -L . -lPDFNetC -Wl,-rpath,. -shared -static-libstdc++ %s -o libpdftron.so" % entryPoint
+        gccCommand = "g++ -Wall -fuse-ld=gold -fpic -I ../Headers -L . -lPDFNetC -Wl,-rpath,. -shared -static-libstdc++ %s -o libpdftron.so" % entryPoint
     else:
         print("Running Mac build...")
         if not core_download_link:
@@ -211,7 +211,7 @@ def main():
         extractArchive("PDFNetCMac.zip")
         os.remove("PDFNetCMac.zip")
         copyPaths('PDFNetCMac', ['Headers', 'Lib', 'Resources'], '.')
-        gccCommand = "gcc -fPIC -lstdc++ -I../Headers -L. -lPDFNetC -dynamiclib -undefined suppress -flat_namespace %s -o libpdftron.dylib" % entryPoint
+        gccCommand = "gcc -Wall -fPIC -lstdc++ -I../Headers -L. -lPDFNetC -dynamiclib -undefined suppress -flat_namespace %s -o libpdftron.dylib" % entryPoint
 
     os.chdir("../build")
 
