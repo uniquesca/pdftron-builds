@@ -30,3 +30,9 @@ Therefore library has to be copied into one of the following directories:
 
 Empirically known that not all the folders above will work, so different ones should be tried.
 Once it's better known why not all of them work, this instruction should be updated.
+
+
+### Example (Ubuntu 16, php 5.6):
+Files were copied to `/usr/lib/php/20131226/` directory.
+Apache's and cli configs were updated by adding `extension=/usr/lib/php/20131226/PDFNetPHP.so`
+And `ln -s /usr/lib/php/20131226/libPDFNetC.so /usr/lib/libPDFNetC.so` was run to create a symlink.
