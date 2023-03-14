@@ -83,6 +83,7 @@ jobs:
         run: |
           mkdir -p main/${{ matrix.os }}/php-${{ matrix.php }}
           cp wrappers_build/PDFNetWrappers/build/lib/PDFNetPHP.so main/${{ matrix.os }}/php-${{ matrix.php }}/
+          cp wrappers_build/PDFNetWrappers/build/lib/PDFNetPHP_core.php main/${{ matrix.os }}/php-${{ matrix.php }}/
           cp wrappers_build/PDFNetWrappers/PDFNetC/Lib/libPDFNetC.so main/${{ matrix.os }}/php-${{ matrix.php }}/
           
           cd main/
