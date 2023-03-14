@@ -28,6 +28,7 @@ jobs:
           sudo add-apt-repository -y ppa:ondrej/php
           sudo apt-get update
           sudo apt-get install php${{ matrix.php }} php${{ matrix.php }}-dev -y
+          php-config
 
       - uses: actions/checkout@v3
         with:
