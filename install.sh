@@ -69,7 +69,7 @@ if [ ! -d "$LIB_PATH" ]; then
   exit 2
 fi
 
-ln -sf LIBSO "${LIB_PATH%/}/"
+ln -sf $LIBSO "${LIB_PATH%/}/"
 echo "> Created link for libPDFNetC in $LIB_PATH"
 
 echo "Installation complete!"
