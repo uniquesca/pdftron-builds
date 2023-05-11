@@ -4,13 +4,29 @@ This repo contains builds of PDFTron for various PHP versions.
 
 ## Install
 
+Run install.sh script being root or install manually. 
+Script usage:
+```bash
+# Usage: sudo ./install.sh UBUNTU_VERSION PHP_VERSION PHP_CONFIG_PATH
+# Arguments:
+#   UBUNTU_VERSION: should be 16.04 or 18.04 or 22.04
+#   PHP_VERSION: should be 5.6 or 8.1
+#   LIB_TARGET_PATH: path to put link for the libPDFNetC library.
+#       If skipped, /usr/local/lib will be used.
+#   PHP_CONFIG_PATH: path to PHP configuration folder, in Debian-based systems it's
+#       usually /etc/php/ or /etc/php/PHP_VERSION/. If skipped, /etc/php/PHP_VERSION
+#       will be used.
+```
+
+## Install manually
+
 #### 1. Copy files
 
 Copy files from the folder matching OS and PHP version to any folder on the server where PDFTron need to run.
 
 #### 2. Register PHP extension PDFNetPHP.so
 
-PHP extensions are enabled in different places depending on OS. 
+PHP extensions are enabled in different places depending on OS.
 
 Ubuntu example:
 ```bash
