@@ -59,18 +59,18 @@ echo "> Module enabled for Apache in ${PHP_CONFIG_PATH%/}/apache2/conf.d/20-pdfn
 
 if [ -z "$3" ]
 then
-      LIB_PATH="/usr/local/lib/"
+      PDFNETC_LINK_PATH="/usr/lib/"
 else
-      LIB_PATH=$3
+      PDFNETC_LINK_PATH=$3
 fi
 
-if [ ! -d "$LIB_PATH" ]; then
-  echo "$LIB_PATH does not exist, specify proper path to the library folder."
+if [ ! -d "$PDFNETC_LINK_PATH" ]; then
+  echo "$PDFNETC_LINK_PATH does not exist, specify proper path to the library folder."
   exit 2
 fi
 
-ln -sf LIBSO "${LIB_PATH%/}/"
-echo "> Created link for libPDFNetC in $LIB_PATH"
+ln -sf LIBSO "${PDFNETC_LINK_PATH%/}/"
+echo "> Created link for libPDFNetC in $PDFNETC_LINK_PATH"
 
 echo "Installation complete!"
 
