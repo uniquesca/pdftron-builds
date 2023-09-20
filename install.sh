@@ -2,15 +2,15 @@
 
 # Installation script for PDFTron in the system.
 # Has to be executed by the user with admin rights (sudo user)
-# Usage: sudo ./install.sh UBUNTU_VERSION PHP_VERSION PHP_CONFIG_PATH
+# Usage: sudo ./install.sh UBUNTU_VERSION PHP_VERSION PHP_CONFIG_PATH PDFNETC_LINK_PATH
 # Arguments:
 #   UBUNTU_VERSION: should be 16.04 or 18.04 or 22.04
 #   PHP_VERSION: should be 5.6 or 8.1
-#   LIB_TARGET_PATH: path to put link for the libPDFNetC library.
-#       If skipped, /usr/local/lib will be used.
 #   PHP_CONFIG_PATH: path to PHP configuration folder, in Debian-based systems it's
 #       usually /etc/php/ or /etc/php/PHP_VERSION/. If skipped, /etc/php/PHP_VERSION
 #       will be used.
+#   PDFNETC_LINK_PATH: path to put link for the libPDFNetC library.
+#       If skipped, /usr/lib will be used.
 
 
 if [ "$EUID" -ne 0 ]
@@ -32,7 +32,7 @@ LIBSO="$TARGET_FOLDER/libPDFNetC.so"
 
 echo "Installing PDFNetPHP from $TARGET_FOLDER...";
 
-if [ -z "$4" ]
+if [ -z "$3" ]
 then
       PHP_CONFIG_PATH="/etc/php/$2/"
 else
@@ -57,11 +57,11 @@ echo "> Module enabled for CLI in ${PHP_CONFIG_PATH%/}/cli/conf.d/20-pdfnetphp.i
 ln -sf $EXTENSION_INI "${PHP_CONFIG_PATH%/}/apache2/conf.d/20-pdfnetphp.ini"
 echo "> Module enabled for Apache in ${PHP_CONFIG_PATH%/}/apache2/conf.d/20-pdfnetphp.ini"
 
-if [ -z "$3" ]
+if [ -z "$4" ]
 then
       PDFNETC_LINK_PATH="/usr/lib/"
 else
-      PDFNETC_LINK_PATH=$3
+      PDFNETC_LINK_PATH=$4
 fi
 
 if [ ! -d "$PDFNETC_LINK_PATH" ]; then
@@ -69,7 +69,7 @@ if [ ! -d "$PDFNETC_LINK_PATH" ]; then
   exit 2
 fi
 
-ln -sf LIBSO "${PDFNETC_LINK_PATH%/}/"
+ln -sf $LIBSO "${PDFNETC_LINK_PATH%/}/"
 echo "> Created link for libPDFNetC in $PDFNETC_LINK_PATH"
 
 echo "Installation complete!"
