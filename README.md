@@ -48,10 +48,20 @@ Empirically known that not all the folders above will work, so different ones sh
 Once it's better known why not all of them work, this instruction should be updated.
 
 
-### Example (Ubuntu 16, php 5.6):
+### Examples:
+## Ubuntu 16 (php 5.6):
 Files were copied to `/usr/lib/php/20131226/` directory.
 Apache's and cli configs were updated by adding `extension=/usr/lib/php/20131226/PDFNetPHP.so`
 And `ln -s /usr/lib/php/20131226/libPDFNetC.so /usr/lib/libPDFNetC.so` was run to create a symlink.
+
+## Redhat Enterprise Linux 8.7 (php 8.1):
+1. Files were copied to:  
+   `/usr/lib64/php/modules/PDFNetPHP.so`  
+   and  
+   `/usr/lib64/libPDFNetC.so`
+2. Created a file /etc/php.d/pdfnetphp.ini with such content:  
+   `extension=/usr/lib64/php/modules/PDFNetPHP.so`
+3. Restart apache or php-fpm
 
 ### To test if everything is working correctly:
 Run `php test.php` (in the test dir), as a result -> `result.pdf` should be created in the `test_files` subdirectory.
