@@ -41,7 +41,7 @@ sudo ln -s /etc/php/%PHPVERSION%/mods-available/pdfnetphp.ini /etc/php/%PHPVERSI
 #### 3. Register PDFNetC.so library
 
 PHP extension PDFNetPHP.so requires dynamically loaded library PDFNetC.so, which should be discoverable by `ld`.
-Therefore library has to be copied into one of the following directories:
+Therefore library has to be copied into one of the following directories:  
 `ld --verbose | grep SEARCH_DIR | tr -s ' ;' \\012`
 
 Empirically known that not all the folders above will work, so different ones should be tried.
@@ -52,3 +52,6 @@ Once it's better known why not all of them work, this instruction should be upda
 Files were copied to `/usr/lib/php/20131226/` directory.
 Apache's and cli configs were updated by adding `extension=/usr/lib/php/20131226/PDFNetPHP.so`
 And `ln -s /usr/lib/php/20131226/libPDFNetC.so /usr/lib/libPDFNetC.so` was run to create a symlink.
+
+### To test if everything is working correctly:
+Run `php test.php` (in the test dir), as a result -> `result.pdf` should be created in the `test_files` subdirectory.
