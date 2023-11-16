@@ -1,9 +1,8 @@
 # PDFTron Builds
-
 This repo contains builds of PDFTron for various PHP versions.
 
-## Install
 
+## Install
 Run install.sh script being root or install manually. 
 Script usage:
 ```bash
@@ -18,14 +17,13 @@ Script usage:
 #       If skipped, /usr/lib will be used.
 ```
 
+
 ## Install manually
 
 #### 1. Copy files
-
 Copy files from the folder matching OS and PHP version to any folder on the server where PDFTron need to run.
 
 #### 2. Register PHP extension PDFNetPHP.so
-
 PHP extensions are enabled in different places depending on OS.
 
 Ubuntu example:
@@ -39,7 +37,6 @@ sudo ln -s /etc/php/%PHPVERSION%/mods-available/pdfnetphp.ini /etc/php/%PHPVERSI
 ```
 
 #### 3. Register PDFNetC.so library
-
 PHP extension PDFNetPHP.so requires dynamically loaded library PDFNetC.so, which should be discoverable by `ld`.
 Therefore library has to be copied into one of the following directories:  
 `ld --verbose | grep SEARCH_DIR | tr -s ' ;' \\012`
@@ -49,12 +46,12 @@ Once it's better known why not all of them work, this instruction should be upda
 
 
 ### Examples:
-## Ubuntu 16 (php 5.6):
+#### Ubuntu 16 (php 5.6):
 Files were copied to `/usr/lib/php/20131226/` directory.
 Apache's and cli configs were updated by adding `extension=/usr/lib/php/20131226/PDFNetPHP.so`
 And `ln -s /usr/lib/php/20131226/libPDFNetC.so /usr/lib/libPDFNetC.so` was run to create a symlink.
 
-## Redhat Enterprise Linux 8.7 (php 8.1):
+#### Redhat Enterprise Linux 8.7 (php 8.1):
 1. Files were copied to:  
    `/usr/lib64/php/modules/PDFNetPHP.so`  
    and  
@@ -62,6 +59,7 @@ And `ln -s /usr/lib/php/20131226/libPDFNetC.so /usr/lib/libPDFNetC.so` was run t
 2. Created a file /etc/php.d/pdfnetphp.ini with such content:  
    `extension=/usr/lib64/php/modules/PDFNetPHP.so`
 3. Restart apache or php-fpm
+
 
 ### To test if everything is working correctly:
 Run `php test.php` (in the test dir), as a result -> `result.pdf` should be created in the `test_files` subdirectory.
