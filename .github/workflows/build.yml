@@ -1,6 +1,16 @@
 name: Build
 
 on:
+  workflow_dispatch:
+      inputs:
+        os:
+          description: 'The operating system to use when triggering the job'
+          required: false
+          default: 'ubuntu-22.04'
+        phpVersion:
+          description: 'The php version to use when triggering the job'
+          required: false
+          default: '8.1'
   pull_request:
     branches:
       - 'main'
@@ -10,13 +20,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-18.04, ubuntu-22.04 ]
+        os: [ ubuntu-22.04 ]
         php: [ 5.6, 8.1, 8.2 ]
         exclude:
-          - os: ubuntu-18.04
-            php: 8.1
-          - os: ubuntu-18.04
-            php: 8.2
           - os: ubuntu-22.04
             php: 5.6
 
@@ -36,10 +42,9 @@ jobs:
           php -v
           php-config --version
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: main
-          ref: develop
 
       - name: Build Swig v4
         if: matrix.php != '5.6'
@@ -103,9 +108,6 @@ jobs:
           git config --local user.name "GitHub Actions"
 
           git diff-index --quiet HEAD || (git commit -a -m "Automatic commit by GitHub Actions: #${GITHUB_SHA}" && git push)
-
-      - if: always()
-        run: cat wrappers_build/PDFNetWrappers/build/CMakeFiles/CMakeOutput.log
 
       - name: See compiled files
         if: always()
