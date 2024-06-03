@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Installation script for PDFTron in the system.
 # Has to be executed by the user with admin rights (sudo user)
@@ -12,9 +12,8 @@
 #   PDFNETC_LINK_PATH: path to put link for the libPDFNetC library.
 #       If skipped, /usr/lib will be used.
 
-
-if [ "$EUID" -ne 0 ]
-  then echo "Please run this script as root"
+if [ "$EUID" -ne 0 ]; then
+  echo "Please run this script as root"
   exit
 fi
 
