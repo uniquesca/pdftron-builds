@@ -1,6 +1,16 @@
 name: Build
 
 on:
+  workflow_dispatch:
+      inputs:
+        os:
+          description: 'The operating system to use when triggering the job'
+          required: false
+          default: 'ubuntu-18.04'
+        phpVersion:
+          description: 'The php version to use when triggering the job'
+          required: false
+          default: '8.1'
   pull_request:
     branches:
       - 'main'
