@@ -9,10 +9,10 @@ Script usage:
 # Usage: sudo ./install.sh UBUNTU_VERSION PHP_VERSION PHP_CONFIG_PATH PDFNETC_LINK_PATH
 # Arguments:
 #   UBUNTU_VERSION: should be 16.04 or 18.04 or 22.04
-#   PHP_VERSION: should be 5.6 or 8.1
+#   PHP_VERSION: should be 5.6, 8.1 or 8.2
 #   PHP_CONFIG_PATH: path to PHP configuration folder. 
-#       In Debian-based systems it's usually /etc/php/ or /etc/php/PHP_VERSION/. 
-#       If skipped, /etc/php/PHP_VERSION will be used.
+#       In Debian-based systems it's usually /etc/php/mods-available/ or /etc/php/PHP_VERSION/mods-available. 
+#       If skipped, /etc/php/PHP_VERSION/mods-available/ will be used.
 #   PDFNETC_LINK_PATH: path to put link for the libPDFNetC library.
 #       If skipped, /usr/lib will be used.
 ```

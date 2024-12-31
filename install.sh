@@ -11,6 +11,10 @@
 #       will be used.
 #   PDFNETC_LINK_PATH: path to put link for the libPDFNetC library.
 #       If skipped, /usr/lib will be used.
+# Note: this scripts created PHP config file, but doesn't create links (it used to). For Ubuntu
+# it might be necessary to created the links manually, i.e.
+# $> ln -s /etc/php/8.2/mods-available/pdfnetphp.ini /etc/php/8.2/cli/conf.d/20-pdfnetphp.ini
+# $> ln -s /etc/php/8.2/mods-available/pdfnetphp.ini /etc/php/8.2/apache2/conf.d/20-pdfnetphp.ini
 
 if [ "$EUID" -ne 0 ]; then
   echo "Please run this script as root"
@@ -33,7 +37,7 @@ echo "Installing PDFNetPHP from $TARGET_FOLDER...";
 
 if [ -z "$3" ]
 then
-      PHP_CONFIG_PATH="/etc/php/$2/"
+      PHP_CONFIG_PATH="/etc/php/$2/mods-available"
 else
       PHP_CONFIG_PATH=$3
 fi
@@ -43,18 +47,19 @@ if [ ! -d "$PHP_CONFIG_PATH" ]; then
   exit 2
 fi
 
-EXTENSION_INI="${PHP_CONFIG_PATH%/}/mods-available/pdfnetphp.ini"
+EXTENSION_INI="${PHP_CONFIG_PATH%/}/pdfnetphp.ini"
 
 # Register extension
 echo "extension=$PDFNETSO" > "$EXTENSION_INI"
 echo "Module registered in $EXTENSION_INI"
 
 # Enable the module for CLI
-ln -sf $EXTENSION_INI "${PHP_CONFIG_PATH%/}/cli/conf.d/20-pdfnetphp.ini"
-echo "> Module enabled for CLI in ${PHP_CONFIG_PATH%/}/cli/conf.d/20-pdfnetphp.ini"
+echo "> Skipping creating links for the PHP config file, please do it manually if necessary."
+# ln -sf $EXTENSION_INI "${PHP_CONFIG_PATH%/}/cli/conf.d/20-pdfnetphp.ini"
+# echo "> Module enabled for CLI in ${PHP_CONFIG_PATH%/}/cli/conf.d/20-pdfnetphp.ini"
 
-ln -sf $EXTENSION_INI "${PHP_CONFIG_PATH%/}/apache2/conf.d/20-pdfnetphp.ini"
-echo "> Module enabled for Apache in ${PHP_CONFIG_PATH%/}/apache2/conf.d/20-pdfnetphp.ini"
+# ln -sf $EXTENSION_INI "${PHP_CONFIG_PATH%/}/apache2/conf.d/20-pdfnetphp.ini"
+# echo "> Module enabled for Apache in ${PHP_CONFIG_PATH%/}/apache2/conf.d/20-pdfnetphp.ini"
 
 if [ -z "$4" ]
 then
