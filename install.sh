@@ -46,12 +46,14 @@ fi
 
 if [ -n "$4" ]
 then
-  echo "Target folder: $4";
+  echo "Target folder: $4"
   # Moving .so files into specified directory
   cp "$PDFNETSO" "$4"
   cp "$LIBSO" "$4"
   PDFNETSO="$4/PDFNetPHP.so"
   LIBSO="$4/libPDFNetC.so"
+else
+  echo "Target folder: $SO_SOURCE_FOLDER"
 fi
 
 if [ ! -d "$PHP_CONFIG_PATH" ]; then
