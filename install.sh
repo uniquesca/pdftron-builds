@@ -44,8 +44,9 @@ else
       PHP_CONFIG_PATH=$3
 fi
 
-if [ -z "$4" ]
+if [ -n "$4" ]
 then
+  echo "Target folder: $4";
   # Moving .so files into specified directory
   cp "$PDFNETSO" "$4"
   cp "$LIBSO" "$4"
