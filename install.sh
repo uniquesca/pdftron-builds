@@ -11,6 +11,8 @@
 #       will be used.
 #   PDFNETC_LINK_PATH: path to put link for the libPDFNetC library.
 #       If skipped, /usr/lib will be used.
+#   SO_TARGET_FOLDER: path to where so files will be located. If skipped,
+#       the script will use paths from within this repo.
 # Note: this scripts created PHP config file, but doesn't create links (it used to). For Ubuntu
 # it might be necessary to created the links manually, i.e.
 # $> ln -s /etc/php/8.2/mods-available/pdfnetphp.ini /etc/php/8.2/cli/conf.d/20-pdfnetphp.ini
@@ -23,23 +25,32 @@ fi
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-TARGET_FOLDER="$SCRIPT_DIR/ubuntu-$1/php-$2"
+SO_SOURCE_FOLDER="$SCRIPT_DIR/ubuntu-$1/php-$2"
 
-if [ ! -d "$TARGET_FOLDER" ]; then
-  echo "$TARGET_FOLDER does not exist, choose either another OS version, or another PHP version."
+if [ ! -d "$SO_SOURCE_FOLDER" ]; then
+  echo "$SO_SOURCE_FOLDER does not exist, choose either another OS version, or another PHP version."
   exit 2
 fi
 
-PDFNETSO="$TARGET_FOLDER/PDFNetPHP.so"
-LIBSO="$TARGET_FOLDER/libPDFNetC.so"
+PDFNETSO="$SO_SOURCE_FOLDER/PDFNetPHP.so"
+LIBSO="$SO_SOURCE_FOLDER/libPDFNetC.so"
 
-echo "Installing PDFNetPHP from $TARGET_FOLDER...";
+echo "Installing PDFNetPHP from $SO_SOURCE_FOLDER...";
 
 if [ -z "$3" ]
 then
       PHP_CONFIG_PATH="/etc/php/$2/mods-available"
 else
       PHP_CONFIG_PATH=$3
+fi
+
+if [ -z "$4" ]
+then
+  # Moving .so files into specified directory
+  cp "$PDFNETSO" "$4"
+  cp "$LIBSO" "$4"
+  PDFNETSO="$4/PDFNetPHP.so"
+  LIBSO="$4/libPDFNetC.so"
 fi
 
 if [ ! -d "$PHP_CONFIG_PATH" ]; then
