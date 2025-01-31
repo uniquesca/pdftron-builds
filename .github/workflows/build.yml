@@ -1,24 +1,20 @@
 name: Build
 
 on:
-  workflow_dispatch:
-    inputs:
-      os:
-        description: 'The operating system to use when triggering the job'
-        required: false
-        default: 'ubuntu-22.04'
-      phpVersion:
-        description: 'The php version to use when triggering the job'
-        required: false
-        default: '8.1'
-  pull_request:
-    branches:
-      - 'main'
+  create
 
 jobs:
+  version:
+    name: Get version
+    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/hotfix/')
+    uses: uniquesca/ci/.github/workflows/get-version.yml@main
+    with:
+      ref: ${{ github.ref }}
+
   build:
     name: Build
     strategy:
+      max-parallel: 1
       fail-fast: false
       matrix:
         os: [ ubuntu-22.04 ]
