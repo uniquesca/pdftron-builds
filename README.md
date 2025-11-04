@@ -63,3 +63,43 @@ And `ln -s /usr/lib/php/20131226/libPDFNetC.so /usr/lib/libPDFNetC.so` was run t
 
 ### To test if everything is working correctly:
 Run `php test.php` (in the test dir), as a result -> `result.pdf` should be created in the `test_files` subdirectory.
+
+
+
+### To install for php-fpm:
+1.
+sudo mkdir -p /opt/pdftron/php-8.2
+sudo cp /path/to/PDFNetPHP.so /opt/pdftron/php-8.2/
+sudo cp /path/to/libPDFNetC.so /opt/pdftron/php-8.2/
+sudo chown -R root:root /opt/pdftron/php-8.2
+sudo chmod 0755 /opt/pdftron/php-8.2
+
+sudo tee /etc/opt/remi/php82/php.d/50-pdftron.ini >/dev/null <<'EOF'
+; PDFTron for PHP 8.2
+extension=/opt/pdftron/php-8.2/PDFNetPHP.so
+EOF
+
+2. Edit /etc/opt/remi/php82/php-fpm.d/www.conf and set (or confirm) these:
+user = apache
+group = apache
+
+; Use a UNIX socket (recommended)
+listen = /var/opt/remi/php82/run/php-fpm/www.sock
+listen.mode = 0660
+
+3.
+sudo mkdir -p /etc/systemd/system/php82-php-fpm.service.d
+sudo tee /etc/systemd/system/php82-php-fpm.service.d/override.conf >/dev/null <<'EOF'
+[Service]
+Environment=LD_LIBRARY_PATH=/opt/pdftron/php-8.2
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl restart php82-php-fpm
+
+### To update for php-fpm:
+sudo cp /path/to/PDFNetPHP.so /opt/pdftron/php-8.2/
+sudo cp /path/to/libPDFNetC.so /opt/pdftron/php-8.2/
+sudo chown -R root:root /opt/pdftron/php-8.2
+sudo chmod 0755 /opt/pdftron/php-8.2
+sudo systemctl restart php82-php-fpm
