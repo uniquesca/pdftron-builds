@@ -61,9 +61,8 @@ And `ln -s /usr/lib/php/20131226/libPDFNetC.so /usr/lib/libPDFNetC.so` was run t
 3. Restart apache or php-fpm
 
 
-### To test if everything is working correctly:
+### To test manually
 Run `php test.php` (in the test dir), as a result -> `result.pdf` should be created in the `test_files` subdirectory.
-
 
 ### To install for php-fpm:
 1. `sudo mkdir -p /opt/pdftron/php-8.2`  
@@ -97,3 +96,7 @@ Run `php test.php` (in the test dir), as a result -> `result.pdf` should be crea
 `sudo chown -R root:root /opt/pdftron/php-8.2`  
 `sudo chmod 0755 /opt/pdftron/php-8.2`  
 `sudo systemctl restart php82-php-fpm`
+
+### To test in CI
+
+Set the `PDFTRON_LICENSE_KEY` environment variable to your license key and run `php test.php` (in the test dir), as a result -> `result.pdf` should be created in the `test_files` subdirectory.
