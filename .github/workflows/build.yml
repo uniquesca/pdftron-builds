@@ -17,7 +17,7 @@ jobs:
       max-parallel: 1
       fail-fast: false
       matrix:
-        os: [ ubuntu-22.04, ubuntu-24.04 ]
+        os: [ ubuntu-24.04, ubuntu-26.04 ]
         php: [ 8.2, 8.3 ]
     runs-on: ${{ matrix.os }}
     steps:
@@ -34,7 +34,7 @@ jobs:
           php -v
           php-config --version
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           path: main
 
@@ -42,7 +42,7 @@ jobs:
         if: matrix.php != '5.6'
         run: |
           sudo apt install libpcre2-dev
-          git clone https://github.com/swig/swig.git
+          git clone --depth 1 --branch v4.5.1 https://github.com/swig/swig.git
           cd swig
           mkdir Build
           cd Build
@@ -104,6 +104,7 @@ jobs:
       - name: See compiled files
         if: always()
         run: |
+          cat wrappers_build/PDFNetWrappers/build/PDFNetPHP/swig.err.log || true
           ls -al wrappers_build/PDFNetWrappers/
           ls -al wrappers_build/PDFNetWrappers/build/
           ls -al wrappers_build/PDFNetWrappers/build/lib/

@@ -62,4 +62,4 @@ And `ln -s /usr/lib/php/20131226/libPDFNetC.so /usr/lib/libPDFNetC.so` was run t
 
 
 ### To test if everything is working correctly:
-Run `php test.php` (in the test dir), as a result -> `result.pdf` should be created in the `test_files` subdirectory.
+Set the `PDFTRON_LICENSE_KEY` environment variable to your license key and run `php test.php` (in the test dir), as a result -> `result.pdf` should be created in the `test_files` subdirectory.

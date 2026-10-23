@@ -1,0 +1,80 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  discover:
+    name: Discover builds
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v7
+
+      # Every <os>/php-<version>/PDFNetPHP.so in the repo becomes a matrix entry.
+      # Builds for OSes that GitHub provides as runners are tested natively,
+      # the rest are tested inside the official php:<version>-cli container.
+      - name: Build matrix
+        id: matrix
+        run: |
+          entries=()
+          for so in */php-*/PDFNetPHP.so; do
+            dir=$(dirname "$so")
+            os=${dir%%/*}
+            php=${dir#*/php-}
+            case "$os" in
+              ubuntu-22.04|ubuntu-24.04) runner=$os; container="" ;;
+              *) runner=ubuntu-latest; container="php:${php}-cli" ;;
+            esac
+            entries+=("{\"dir\":\"$dir\",\"os\":\"$os\",\"php\":\"$php\",\"runner\":\"$runner\",\"container\":\"$container\"}")
+          done
+          matrix="{\"include\":[$(IFS=,; echo "${entries[*]}")]}"
+          echo "$matrix"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
+  test:
+    name: Test ${{ matrix.dir }}
+    needs: discover
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    runs-on: ${{ matrix.runner }}
+    container: ${{ matrix.container }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up PHP
+        if: matrix.container == ''
+        run: |
+          sudo apt-get update
+          sudo apt-get purge -y php*
+          sudo add-apt-repository -y ppa:ondrej/php
+          sudo apt-get install php${{ matrix.php }}-cli -y
+          sudo update-alternatives --set php /usr/bin/php${{ matrix.php }}
+          php -v
+
+      - name: Run test
+        working-directory: test
+        env:
+          PDFTRON_LICENSE_KEY: ${{ secrets.PDFTRON_LICENSE_KEY }}
+          BUILD_DIR: ${{ matrix.dir }}
+        run: |
+          if [ -z "$PDFTRON_LICENSE_KEY" ]; then
+            echo "::error::PDFTRON_LICENSE_KEY secret is not set"
+            exit 1
+          fi
+          # $GITHUB_WORKSPACE (not github.workspace) resolves correctly inside containers too
+          export LD_LIBRARY_PATH="$GITHUB_WORKSPACE/$BUILD_DIR"
+          php -d extension="$LD_LIBRARY_PATH/PDFNetPHP.so" test.php
+          test -s test_files/result.pdf
+
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: result-${{ matrix.os }}-php-${{ matrix.php }}
+          path: test/test_files/result.pdf
+          if-no-files-found: ignore
