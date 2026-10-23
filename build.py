@@ -122,7 +122,7 @@ def main():
     if platform.system().startswith('Windows'):
         print("Running Windows build...")
         if not core_download_link:
-           core_download_link = 'http://www.pdftron.com/downloads/PDFNetC64.zip'
+           core_download_link = 'https://downloads.apryse.com/downloads/PDFNetC64.zip'
         if not skip_dl:
            print("Downloading PDFNetC64...")
            urllib.request.urlretrieve(core_download_link, "PDFNetC64.zip")
@@ -133,7 +133,7 @@ def main():
     elif platform.system().startswith('Linux'):
         print("Running Linux build...")
         if not core_download_link:
-           core_download_link = 'http://www.pdftron.com/downloads/PDFNetC64.tar.gz'
+           core_download_link = 'https://downloads.apryse.com/downloads/PDFNetC64.tar.gz'
         print(core_download_link)
         if not skip_dl:
            print("Downloading PDFNetC64...")
@@ -144,7 +144,7 @@ def main():
     else:
         print("Running Mac build...")
         if not core_download_link:
-           core_download_link = 'http://www.pdftron.com/downloads/PDFNetCMac.zip'
+           core_download_link = 'https://downloads.apryse.com/downloads/PDFNetCMac.zip'
         if not skip_dl:
            print("Downloading PDFNetC64...")
            urllib.request.urlretrieve(core_download_link, 'PDFNetCMac.zip')
