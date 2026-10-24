@@ -2,14 +2,30 @@
 This repo contains builds of PDFTron for various PHP versions.
 
 
+## Available builds
+
+| OS           | PHP versions       |
+|--------------|--------------------|
+| CentOS 7.9   | 8.1                |
+| RedHat 8     | 8.2, 8.3, 8.4      |
+| RedHat 9     | 8.2, 8.3, 8.4      |
+| Ubuntu 16.04 | 5.6                |
+| Ubuntu 18.04 | 5.6                |
+| Ubuntu 22.04 | 8.1, 8.2, 8.3, 8.4 |
+| Ubuntu 24.04 | 8.2, 8.3, 8.4      |
+
+All builds are NTS (non-thread-safe). `install.sh` supports the Ubuntu builds only;
+for RedHat/CentOS install manually (see below).
+
+
 ## Install
 Run install.sh script being root or install manually. 
 Script usage:
 ```bash
 # Usage: sudo ./install.sh UBUNTU_VERSION PHP_VERSION PHP_CONFIG_PATH PDFNETC_LINK_PATH
 # Arguments:
-#   UBUNTU_VERSION: should be 16.04 or 18.04 or 22.04
-#   PHP_VERSION: should be 5.6, 8.1 or 8.2
+#   UBUNTU_VERSION: should be 16.04, 18.04, 22.04 or 24.04
+#   PHP_VERSION: should be 5.6, 8.1, 8.2, 8.3 or 8.4 (see "Available builds" above)
 #   PHP_CONFIG_PATH: path to PHP configuration folder. 
 #       In Debian-based systems it's usually /etc/php/mods-available/ or /etc/php/PHP_VERSION/mods-available. 
 #       If skipped, /etc/php/PHP_VERSION/mods-available/ will be used.
@@ -65,6 +81,9 @@ And `ln -s /usr/lib/php/20131226/libPDFNetC.so /usr/lib/libPDFNetC.so` was run t
 Run `php test.php` (in the test dir), as a result -> `result.pdf` should be created in the `test_files` subdirectory.
 
 ### To install for php-fpm:
+The example below is for PHP 8.2 from Remi. For PHP 8.3 or 8.4 replace `8.2` with `8.3`/`8.4`
+and `php82` with `php83`/`php84`.
+
 1. `sudo mkdir -p /opt/pdftron/php-8.2`  
 `sudo cp /path/to/PDFNetPHP.so /opt/pdftron/php-8.2/`  
 `sudo cp /path/to/libPDFNetC.so /opt/pdftron/php-8.2/`   

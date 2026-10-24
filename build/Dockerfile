@@ -1,7 +1,7 @@
 # -------- Build args (choose at build time) --------
 ARG UBI_MAJOR=9          # 8 or 9
 ARG PHP_VER=83           # 81, 82, 83, 84, 85
-ARG PDFTRON_SDK_URL=http://www.pdftron.com/downloads/PDFNetC64.tar.gz
+ARG PDFTRON_SDK_URL=https://downloads.apryse.com/downloads/PDFNetC64.tar.gz
 ARG WRAPPERS_REF=master
 ARG SWIG_VERSION=4.1.1
 
