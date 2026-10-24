@@ -4,8 +4,9 @@
 # Has to be executed by the user with admin rights (sudo user)
 # Usage: sudo ./install.sh UBUNTU_VERSION PHP_VERSION PHP_CONFIG_PATH PDFNETC_LINK_PATH
 # Arguments:
-#   UBUNTU_VERSION: should be 16.04 or 18.04 or 22.04
-#   PHP_VERSION: should be 5.6 or 8.1
+#   UBUNTU_VERSION: should be 16.04, 18.04, 22.04 or 24.04
+#   PHP_VERSION: should be 5.6, 8.1, 8.2, 8.3 or 8.4 (an ubuntu-UBUNTU_VERSION/php-PHP_VERSION
+#       folder must exist in this repo)
 #   PHP_CONFIG_PATH: path to PHP configuration folder, in Debian-based systems it's
 #       usually /etc/php/ or /etc/php/PHP_VERSION/. If skipped, /etc/php/PHP_VERSION
 #       will be used.
